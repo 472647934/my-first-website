@@ -39,6 +39,10 @@
                 transform: translateY(-5px);
                 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             }
+            .message-box {
+                max-height: 200px;
+                overflow-y: auto;
+            }
         }
     </style>
 </head>
@@ -58,7 +62,7 @@
             </div>
             
             <div class="text-center mt-4">
-                <h1 class="text-2xl font-bold text-gray-800">张小明</h1>
+                <h1 class="text-2xl font-bold text-gray-800">杨大爷</h1>
                 <p class="text-gray-500 mt-1">前端开发爱好者</p>
                 
                 <div class="mt-4 flex justify-center space-x-3">
@@ -83,6 +87,15 @@
                 </p>
             </div>
             
+            <!-- 留言区 -->
+            <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                <h2 class="font-semibold text-gray-700 mb-2">留言板</h2>
+                <div id="messageList" class="message-box text-gray-600 text-sm space-y-2">
+                    <!-- 留言会在这里显示 -->
+                    <p class="text-gray-400 italic">暂无留言，快来成为第一个留言的人吧！</p>
+                </div>
+            </div>
+            
             <!-- 技能 -->
             <div class="mt-6">
                 <h2 class="font-semibold text-gray-700 mb-3">我的技能</h2>
@@ -97,7 +110,7 @@
             <!-- 按钮 -->
             <div class="mt-8">
                 <button id="greetButton" class="w-full bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors">
-                    打招呼
+                    打招呼并留言
                 </button>
             </div>
         </div>
@@ -124,12 +137,70 @@
             }
         });
         
-        // 打招呼按钮功能
+        // 留言功能
         const greetButton = document.getElementById('greetButton');
+        const messageList = document.getElementById('messageList');
+        
+        // 从本地存储加载留言
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('guestbookMessages') || '[]');
+            if (messages.length === 0) {
+                messageList.innerHTML = '<p class="text-gray-400 italic">暂无留言，快来成为第一个留言的人吧！</p>';
+                return;
+            }
+            
+            messageList.innerHTML = '';
+            messages.forEach((msg, index) => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'p-2 bg-white rounded border border-gray-100';
+                messageElement.innerHTML = `
+                    <p class="font-medium">${msg}</p>
+                    <button onclick="deleteMessage(${index})" class="text-red-400 text-xs mt-1">删除</button>
+                `;
+                messageList.appendChild(messageElement);
+            });
+        }
+        
+        // 删除留言
+        function deleteMessage(index) {
+            const messages = JSON.parse(localStorage.getItem('guestbookMessages') || '[]');
+            messages.splice(index, 1);
+            localStorage.setItem('guestbookMessages', JSON.stringify(messages));
+            loadMessages();
+        }
+        
+        // 保存新留言
         greetButton.addEventListener('click', () => {
-            alert('你好！欢迎查看我的个人介绍卡片！');
+            // 弹窗让用户输入留言
+            const userName = prompt('请输入你的名字：');
+            if (!userName) {
+                alert('请输入你的名字哦！');
+                return;
+            }
+            
+            const userMessage = prompt('请留下你的留言：');
+            if (userMessage) {
+                // 格式化留言
+                const formattedMessage = `${userName}：${userMessage}`;
+                
+                // 获取已有留言
+                const messages = JSON.parse(localStorage.getItem('guestbookMessages') || '[]');
+                messages.push(formattedMessage);
+                
+                // 保存到本地存储
+                localStorage.setItem('guestbookMessages', JSON.stringify(messages));
+                
+                // 刷新留言列表
+                loadMessages();
+                
+                alert('感谢你的留言！');
+            } else {
+                alert('你取消了留言～');
+            }
         });
+        
+        // 页面加载时显示已有留言
+        loadMessages();
     </script>
 </body>
 </html>
-    
