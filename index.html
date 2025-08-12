@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人介绍</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#8B5CF6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-xl overflow-hidden card-shadow hover-lift">
+        <!-- 头部背景 -->
+        <div class="h-32 bg-gradient-to-r from-primary to-accent relative">
+            <button id="themeToggle" class="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full transition-colors">
+                <i class="fa fa-moon-o"></i>
+            </button>
+        </div>
+        
+        <!-- 个人信息 -->
+        <div class="px-6 pb-6 -mt-12">
+            <div class="flex justify-center">
+                <img src="https://picsum.photos/200/200" alt="个人头像" class="w-24 h-24 rounded-full border-4 border-white object-cover">
+            </div>
+            
+            <div class="text-center mt-4">
+                <h1 class="text-2xl font-bold text-gray-800">张小明</h1>
+                <p class="text-gray-500 mt-1">前端开发爱好者</p>
+                
+                <div class="mt-4 flex justify-center space-x-3">
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 简介 -->
+            <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                <h2 class="font-semibold text-gray-700 mb-2">关于我</h2>
+                <p class="text-gray-600 text-sm">
+                    我是一名编程初学者，正在学习HTML、CSS和JavaScript。
+                    喜欢探索新的技术，希望有一天能成为一名优秀的开发者。
+                </p>
+            </div>
+            
+            <!-- 技能 -->
+            <div class="mt-6">
+                <h2 class="font-semibold text-gray-700 mb-3">我的技能</h2>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">HTML</span>
+                    <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">CSS</span>
+                    <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">JavaScript</span>
+                    <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">学习中</span>
+                </div>
+            </div>
+            
+            <!-- 按钮 -->
+            <div class="mt-8">
+                <button id="greetButton" class="w-full bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors">
+                    打招呼
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        let isDarkMode = false;
+        
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                htmlElement.classList.add('dark');
+                document.body.classList.add('bg-gray-900');
+                document.body.classList.remove('bg-gray-100');
+                themeToggle.innerHTML = '<i class="fa fa-sun-o"></i>';
+            } else {
+                htmlElement.classList.remove('dark');
+                document.body.classList.remove('bg-gray-900');
+                document.body.classList.add('bg-gray-100');
+                themeToggle.innerHTML = '<i class="fa fa-moon-o"></i>';
+            }
+        });
+        
+        // 打招呼按钮功能
+        const greetButton = document.getElementById('greetButton');
+        greetButton.addEventListener('click', () => {
+            alert('你好！欢迎查看我的个人介绍卡片！');
+        });
+    </script>
+</body>
+</html>
+    
